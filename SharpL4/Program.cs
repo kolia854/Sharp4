@@ -4,12 +4,14 @@ using System.Collections;
 
 namespace SharpL4
 {
+
     public class Arr
     {
+
         public int Value;
         private int CurrentIndex = 0;
         public int CurrentSize = 0;
-        int[] arr;
+        public int[] arr;
         private int Length;
 
         public class Owner
@@ -50,7 +52,7 @@ namespace SharpL4
 
         public void Add(int a)
         {
-            if (CurrentSize < Length-1)
+            if (CurrentSize < Length - 1)
             {
                 arr[CurrentIndex] = a;
                 CurrentIndex++;
@@ -63,7 +65,7 @@ namespace SharpL4
         public static bool operator false(Arr obj)
         {
             var counter = 0;
-            for (int i =0; i <= obj.Length; i++)
+            for (int i = 0; i <= obj.Length; i++)
             {
                 if (obj.arr[i] < 0)
                 {
@@ -143,7 +145,7 @@ namespace SharpL4
 
         public void Print(Arr arr1)
         {
-            for (int i=0;i< arr1.CurrentSize;i++)
+            for (int i = 0; i < arr1.CurrentSize; i++)
             {
                 Console.WriteLine(arr1.arr[i]);
             }
@@ -164,44 +166,78 @@ namespace SharpL4
             else return null;
         }
 
-        public static class StatisticOperation
+    }
+
+
+
+    public static class StatisticOperation
+    {
+        public static int Summ(Arr arr1)
         {
-            public static int Summ(Arr arr1)
+            int sum = 0;
+            for (int i = 0; i <= arr1.CurrentSize; i++)
             {
-                int sum = 0;
-                for (int i = 0; i <= arr1.CurrentSize; i++)
-                {
-                    sum += arr1.arr[i];
-                }
-                return sum;
+                sum += arr1.arr[i];
             }
+            return sum;
+        }
 
-            public static int Diff(Arr arr1)
+        public static int Diff(Arr arr1)
+        {
+            int max = 0, min = 0;
+            for (int i = 0; i < arr1.CurrentSize; i++)
             {
-                int max = 0, min = 0;
-                for (int i = 0; i < arr1.Length; i++)
+                if (max < arr1.arr[i])
                 {
-                    if (max < arr1.arr[i])
-                    {
-                        max = arr1.arr[i];
-                    }
-                    else if (min > arr1.arr[i])
-                    {
-                        min = arr1.arr[i];
-                    }
+                    max = arr1.arr[i];
                 }
-                return (int)(max - min);
+                else if (min > arr1.arr[i])
+                {
+                    min = arr1.arr[i];
+                }
             }
+            return (int)(max - min);
+        }
 
-            public static int Count(Arr arr1)
+        public static int Count(Arr arr1)
+        {
+            return arr1.CurrentSize;
+        }
+
+        public static void CharCount(this string str, char c)
+        {
+            int counter = 0;
+            for (int i = 0; i < str.Length; i++)
             {
-                return arr1.CurrentSize;
+                if (str[i] == c)
+                    counter++;
+            }
+            if (counter > 0)
+            {
+                Console.WriteLine("строка содержит заданный символ");
+            }
+            else
+            {
+                Console.WriteLine("строка не содержит заданный символ");
             }
         }
 
-    }
+        public static int[] Delete(Arr arr1)
+        {
+            for (int i = 0; i <= arr1.CurrentSize; i++)
+            {
+                if (arr1.arr[i] < 0)
+                {
+                    for (int k = i; k < arr1.CurrentSize; k++)
+                    {
+                        arr1.arr[k] = arr1.arr[k + 1];
+                    }
+                }
+            }
+            return arr1.arr;
+        }
 
-   
+    }
 
     class Program
     {
@@ -257,10 +293,17 @@ namespace SharpL4
             array5.Add(17);
             array5.Add(2);
             array5.Add(9);
-            Console.WriteLine(Arr.StatisticOperation.Summ(array5));
-            Console.WriteLine(Arr.StatisticOperation.Diff(array5));
-            Console.WriteLine(Arr.StatisticOperation.Count(array5));
+            Console.WriteLine(StatisticOperation.Summ(array5));
+            Console.WriteLine(StatisticOperation.Diff(array5));
+            Console.WriteLine(StatisticOperation.Count(array5));
+            StatisticOperation.CharCount("коля", 'й');
+            var array6 = new Arr(5);
+            array6.Add(17);
+            array6.Add(-2);
+            array6.Add(9);
+            array6.Add(3);
+            StatisticOperation.Delete(array6);
+            array6.Print(array6);
         }
-
     }
 }
