@@ -12,6 +12,36 @@ namespace SharpL4
         int[] arr;
         private int Length;
 
+        public class Owner
+        {
+            string Id;
+            string Name;
+            string Company;
+
+            public Owner(string id, string name, string company)
+            {
+                this.Id = id;
+                this.Name = name;
+                this.Company = company;
+            }
+
+
+        }
+
+        public class Date
+        {
+            string Day;
+            string Month;
+            string Year;
+
+            public Date(string dd, string mm, string yyyy)
+            {
+                this.Day = dd;
+                this.Month = mm;
+                this.Year = yyyy;
+            }
+        }
+
         public Arr(int Size)
         {
             arr = new int[Size];
@@ -25,7 +55,6 @@ namespace SharpL4
                 arr[CurrentIndex] = a;
                 CurrentIndex++;
                 CurrentSize++;
-                Console.WriteLine("Элемент добавлен.");
             }
             else Console.WriteLine("Превышен размер массива.");
         }
@@ -48,7 +77,7 @@ namespace SharpL4
                 return false;
         }
 
-        // Обязательно перегружаем оператор true
+        // перегружаем оператор true
         public static bool operator true(Arr obj)
         {
             var counter = 0;
@@ -64,6 +93,43 @@ namespace SharpL4
                 return false;
             else
                 return true;
+        }
+
+        public static explicit operator int(Arr arr)
+        {
+            return arr.Length;
+        }
+
+        // Перегружаем ==
+        public static bool operator ==(Arr arr1, Arr arr2)
+        {
+            if (arr1.Length == arr2.Length)
+                return true;
+            else return false;
+        }
+
+        // Перегружаем !=
+        public static bool operator !=(Arr arr1, Arr arr2)
+        {
+            if (arr1.Length != arr2.Length)
+                return true;
+            else return false;
+        }
+
+        // Перегружаем <
+        public static bool operator <(Arr arr1, Arr arr2)
+        {
+            if (arr1.Length < arr2.Length)
+                return true;
+            else return false;
+        }
+
+        // Перегружаем >
+        public static bool operator >(Arr arr1, Arr arr2)
+        {
+            if (arr1.Length > arr2.Length)
+                return true;
+            else return false;
         }
 
         public void RemoveLast()
@@ -97,7 +163,46 @@ namespace SharpL4
             }
             else return null;
         }
+
+        public static class StatisticOperation
+        {
+            public static int Summ(Arr arr1)
+            {
+                int sum = 0;
+                for (int i = 0; i <= arr1.CurrentSize; i++)
+                {
+                    sum += arr1.arr[i];
+                }
+                return sum;
+            }
+
+            public static int Diff(Arr arr1)
+            {
+                int max = 0, min = 0;
+                for (int i = 0; i < arr1.Length; i++)
+                {
+                    if (max < arr1.arr[i])
+                    {
+                        max = arr1.arr[i];
+                    }
+                    else if (min > arr1.arr[i])
+                    {
+                        min = arr1.arr[i];
+                    }
+                }
+                return (int)(max - min);
+            }
+
+            public static int Count(Arr arr1)
+            {
+                return arr1.CurrentSize;
+            }
+        }
+
     }
+
+   
+
     class Program
     {
         static void Main(string[] args)
@@ -124,7 +229,37 @@ namespace SharpL4
                 Console.WriteLine("массив не содержит отрицательных элементов");
             }
 
+            Console.WriteLine((int)array1);
 
+            if (array1 == array2)
+            {
+                Console.WriteLine("Массивы равны");
+            }
+            else
+            {
+                Console.WriteLine("Массивы не равны");
+            }
+
+            if (array1 > array2)
+            {
+                Console.WriteLine("Первый массив больше");
+            }
+            else
+            {
+                Console.WriteLine("Второй массив больше");
+            }
+
+            Arr.Owner Kolya = new Arr.Owner("1", "Kolya", "BSTU");
+            Arr.Date today = new Arr.Date("10", "12", "2020");
+
+
+            var array5 = new Arr(4);
+            array5.Add(17);
+            array5.Add(2);
+            array5.Add(9);
+            Console.WriteLine(Arr.StatisticOperation.Summ(array5));
+            Console.WriteLine(Arr.StatisticOperation.Diff(array5));
+            Console.WriteLine(Arr.StatisticOperation.Count(array5));
         }
 
     }
